@@ -115,9 +115,10 @@ Para criar o producer, executar:
 docker run --rm --interactive ches/kafka kafka-console-producer.sh --topic <topic_name> --broker-list $KAFKA_IP:9092
 
 ```
+O funcionamento do producer via container é o mesmo do producer nativo. O producer fica pronto para enviar a mensagem ao cluster/tópico, como visto [nessa](https://github.com/luizgdias/kafka/blob/master/img_3_container_producer.png) imagem.
 
 Para criar o consumer executar (em aba/janela diferentes dos containers em execução):
 ```
 docker run --rm ches/kafka kafka-console-consumer.sh --topic <topic_name> --from-beginning --zookeeper $ZK_IP:2181
 ```
-
+Da mesma forma que o consumer nativo, o consumer container funciona de maneira análoga, ouvindo o tópico e processando as mensagens de acordo com sua chegada, como mostrado [nessa](https://github.com/luizgdias/kafka/blob/master/img_4_container_cons.png) imagem.

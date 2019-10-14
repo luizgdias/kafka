@@ -122,3 +122,12 @@ Para criar o consumer executar (em aba/janela diferentes dos containers em execu
 docker run --rm ches/kafka kafka-console-consumer.sh --topic <topic_name> --from-beginning --zookeeper $ZK_IP:2181
 ```
 Da mesma forma que o consumer nativo, o consumer container funciona de maneira análoga, ouvindo o tópico e processando as mensagens de acordo com sua chegada, como mostrado [nessa](https://github.com/luizgdias/kafka/blob/master/img_4_container_cons.png) imagem.
+
+## Kafka-python API
+Até agora vimos como realizar a troca de mensagens de forma simples, digitando mensagens no console do producer e enviado-as ao tópico. Percebemos que o tópico possui funço de repositório, enquanto o producer é o agente ativo que envia as mensagens. Já o consumer é um agente passivo-reativo, que escuta as mensagens que chegam no tópico e as processa. 
+Nessa seção será apresentada a API do kafka para a linguagem python. A API proporciona criar producer, tópicos e consumers de forma dinâmica com melhor nível de configuração, por meio da linguagem de programaço python.
+
+O primeiro passo é instalar a API via pip ou pip3 install :
+```
+pip install kafka-python
+```

@@ -1,6 +1,6 @@
 # Instruções para Execução - Apache Kafka
 
-Este hands-on tem a finalidade de explicar conceitos e demonstrar o funcionamento do Apache Kafka e Zookeeper, em sua forma nativa e via containers docker.
+Este hands-on tem a finalidade de conceituar e demonstrar o funcionamento do Apache Kafka e Zookeeper, em sua forma nativa e via containers docker.
 
 ### O que é o Apache Kafka?
 O Apache Kafka é uma aplicação utilizada no desenvolvimento de pipelines de tempo real e streamming. Suas principais caractersticas são: escalabilidade, tolerância a falhas, e velocidade na troca de mensagens entre os módulos que o compõe.

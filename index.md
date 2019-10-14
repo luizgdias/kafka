@@ -188,10 +188,15 @@ Como visto no trecho de código do producer, é utilizada uma variável não def
 bootstrap_servers=[os.environ['kafka_host_url']]
 ```
 
-Para que a função funcione normalmente, é necessário defini-la no arquivo .yml utilizando o trecho de environment, como mostrado a seguir
+Para que a função funcione normalmente, é necessário defini-la no arquivo .yml do container, utilizando o environment, como mostrado a seguir
 ```python
-environment:
-      kafka_host_url: 10.100.16.81:9092
+volumes:
+      - '/path'
+    image: 'name'
+    extra_hosts:
+      - 'host information'
+    environment:
+      kafka_host_url: xx.xxx.xxxx.xx:9092
 ```
 
 O valor recebido pela variável kafka_host_url é referente ao ip e porta da máquina que receberá os dados enviados pelo consumer definido dentro do container.

@@ -128,12 +128,12 @@ Até agora vimos como realizar a troca de mensagens de forma simples, digitando 
 Nessa seção será apresentada a API do kafka para a linguagem python. A API proporciona criar producer, tópicos e consumers de forma dinâmica com melhor nível de configuração, por meio da linguagem de programaço python.
 
 O primeiro passo é instalar a API via pip ou pip3 install :
-```
+```bash
 pip install kafka-python
 ```
 
 Após a instalação, devem ser feitos alguns includes no arquivo .py que receberá o(s) producer(s) e/ou consumer(s):
-```
+```python
 from kafka import KafkaConsumer
 from kafka import KafkaProducer
 from kafka import TopicPartition
@@ -152,5 +152,32 @@ def send_to_kafka_topic(detections, topic_name):
                                 )   
         producer.send(topic_name, detections)
         producer.flush()
-        print("Content sent to kafka topic!")
 ```
+O bloco de código anterior é um exemplo básico de uma função que recebe dois atributos e envia um deles via producer a um tópico. O primeiro parâmetro do construtor do producer é referente ao endereço do servidor, que deve ser correspondente ao ip:porta onde está sendo executado. O segundo parâmetro é a versão da api que está sendo utilizada, e por fim o terceiro serealiza o conteúdo a ser enviado em conteúdo json.
+
+A linha producer.send() envia o conteúdo de 'detections' para o tópico 'topic_name', enquanto producer.flush() bloqueia qualquer requisição ao conteudo que está sendo enviado, até que ele seja de fato enviado ao tópico. A invocação desse método torna todos os registros armazenados em buffer imediatamente disponíveis para envio.
+
+Até agora foi visto como enviar dados ao tópico via API, agora será mostrado como consumir dados de um tópico. O código abaixo exemplifica um modelo de consumer, que pode variar de acordo com os parâmetros configurados.
+
+```python
+def consumer_kafka_topic_messages(topic_name, kafka_ip):
+    consumer = KafkaConsumer(
+                                topic_name,
+                                bootstrap_servers=[kafka_ip],
+                                auto_offset_reset='earliest',
+                                enable_auto_commit=True,
+                                auto_commit_interval_ms=1000,
+                                group_id = 'group_data_science'
+                                value_deserializer=lambda x: loads(x.decode('utf-8'))
+                            )
+
+    for message in consumer:
+        print(message.value)
+    consumer.close()
+```
+A estrutura do consumer é similar a estrutura do producer, diferindo nos parâmetros recebidos na instanciação. Enquanto o producer prepara a mensagem para ser armazenada no tópico (convertendo-a em json), o consumer prepara a mensagem para ser consumida para processamento. A seguir são definidos alguns parâmetros:
+
+- auto_offset_reset é relacionado a como as mensagens serão buscadas (earliest ou latest), ou seja, do início do tópico ao final, ou do final do tópico ao início; 
+- enable_auto_commit é referente a sinalizar ou não as mensagens já consumidas (evitando que em execuçes futuras mensagens já processadas sejam reprocessadas);
+- auto_commit_interval_ms é sobre o tempo de realização do auto commit;
+- group_id está relacionado ao auto_commit e ao não consumo de dados processados. Dessa forma os apenas os consumidores que tiverem o mesmo group_id terão acesso ao conteúdo daquele tópico, e só consumirão os dados uma vez.

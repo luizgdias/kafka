@@ -180,4 +180,18 @@ A estrutura do consumer é similar a estrutura do producer, diferindo nos parâm
 - auto_offset_reset é relacionado a como as mensagens serão buscadas (earliest ou latest), ou seja, do início do tópico ao final, ou do final do tópico ao início; 
 - enable_auto_commit é referente a sinalizar ou não as mensagens já consumidas (evitando que em execuçes futuras mensagens já processadas sejam reprocessadas);
 - auto_commit_interval_ms é sobre o tempo de realização do auto commit;
-- group_id está relacionado ao auto_commit e ao não consumo de dados processados. Dessa forma os apenas os consumidores que tiverem o mesmo group_id terão acesso ao conteúdo daquele tópico, e só consumirão os dados uma vez.
+- group_id está relacionado ao auto_commit e ao não consumo de dados processados. Dessa forma os apenas os consumidores que tiverem o mesmo group_id terão acesso ao conteúdo daquele tópico, e só consumirão os dados uma vez. Essa caracterstica é muito importante porque sem esses parâmetros, sempre que o consumer for invocado, todos os dados do tópico são reprocessados, tanto os novos dados quanto os antigos.
+
+## Configurando .yml do container para enviar dados ao Kafka externo
+Como visto no trecho de código do producer, é utilizada uma variável não definida na função, a variável kafka_host_url:
+```python
+bootstrap_servers=[os.environ['kafka_host_url']]
+```
+
+Para que a função funcione normalmente, é necessário defini-la no arquivo .yml utilizando o trecho de environment, como mostrado a seguir
+```python
+environment:
+      kafka_host_url: 10.100.16.81:9092
+```
+
+O valor recebido pela variável kafka_host_url é referente ao ip e porta da máquina que receberá os dados enviados pelo consumer definido dentro do container.

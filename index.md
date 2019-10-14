@@ -54,6 +54,8 @@ Caso seja necessário criar vários tópicos, para listá-los use o comando:
 kafka-topics.sh --list --bootstrap-server localhost:9092
 ```
 
+obs.: As janelas/abas relacionadas a criação e listagem dos tópicos são estáticas, dessa forma, não é necessário deixá-las abertas. Assim, após criar um tópico, você pode reusar a mesma janela/aba nos passos seguintes.
+
 Por fim, para testar a configuração, é necessário iniciar o producer e o consumer. Em outra aba ou janela, é necessário executar o seguinte código:
 ```
 kafka-console-producer.sh --broker-list localhost:9092 --topic <topic_name>
@@ -66,6 +68,6 @@ O último passo é relacionado a criação do consumer para a visualização das
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <topic_name> --from-beginning
 ```
 
-Essa linha de cdigo mostrará todas as mensagens (do início do tópico até o fim), que estejam armazenadas no tópico <topic_name>, criado em passos iniciais. Como percebido nessa [imagem](https://github.com/luizgdias/kafka/blob/master/img_5_consumer.png), a mensagem enviada ao tópico <topic_name>, foi acessada pelo producer e continua disponível no tópico por um período padrão de sete dias, após esse intervalo, as mensagens do tópico são excluídas.
+Essa linha de cdigo mostrará todas as mensagens (do início do tópico até o fim), que estejam armazenadas no tópico <topic_name>, criado em passos iniciais. Como percebido nessa [imagem](https://github.com/luizgdias/kafka/blob/master/img_5_consumer.png), a mensagem enviada ao tópico <topic_name>, foi acessada pelo consumer e continua disponível no tópico por um período padrão de sete dias (esse intervalo pode ser alterado), após esse intervalo, as mensagens do tópico são excluídas.
 
 ## Executando Kafka via containers docker

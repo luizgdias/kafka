@@ -71,3 +71,50 @@ kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <topic_name>
 Essa linha de cdigo mostrará todas as mensagens (do início do tópico até o fim), que estejam armazenadas no tópico <topic_name>, criado em passos iniciais. Como percebido nessa [imagem](https://github.com/luizgdias/kafka/blob/master/img_5_consumer.png), a mensagem enviada ao tópico <topic_name>, foi acessada pelo consumer e continua disponível no tópico por um período padrão de sete dias (esse intervalo pode ser alterado), após esse intervalo, as mensagens do tópico são excluídas.
 
 ## Executando Kafka via containers docker
+
+O processo de execução do Kafka via container é mais simplificada (pelo isolamento proporcionado pela conteinerização), mas segue os mesmos passos da versão nativa.
+
+O primeiro passo é executar os container zookeeper e kafka:
+
+```
+docker run -d --name zookeeper jplock/zookeeper:3.4.6
+docker run -d --name kafka --link zookeeper:zookeeper ches/kafka
+
+```
+Após executá-los, é necessário exportar os ips dos containers:
+obs: note que os próximos comandos utilizam os conteúdos das variáveis $ZK_IP e $KAFKA_IP, então antes de executar o comando que faz uso de uma das variáveis, exporte seus respectivos valores.
+
+```
+export ZK_IP=$(docker inspect --format "{{ .NetworkSettings.IPAddress }}" zookeeper)
+export KAFKA_IP=$(docker inspect --format "{{ .NetworkSettings.IPAddress }}" kafka)
+
+```
+Opcional: Para visualizar o conteúdo dos ips:
+```
+echo $ZK_IP
+echo $KAFKA_IP
+```
+
+Para criar tópicos:
+```
+docker run --rm ches/kafka kafka-topics.sh --create --topic <topic_name> --replication-factor 1 --partitions 1 --zookeeper $ZK_IP:2181
+
+```
+
+
+Para listar os tópicos do cluster:
+```
+docker run --rm ches/kafka kafka-topics.sh --list --zookeeper $ZK_IP:2181
+```
+
+Para criar o consumer, executar:
+```
+docker run --rm --interactive ches/kafka kafka-console-producer.sh --topic <topic_name> --broker-list $KAFKA_IP:9092
+
+```
+
+Para criar o consumer executar (em aba/janela diferentes):
+```
+docker run --rm ches/kafka kafka-console-consumer.sh --topic <topic_name> --from-beginning --zookeeper $ZK_IP:2181
+```
+

@@ -110,13 +110,13 @@ Para listar os tópicos do cluster:
 docker run --rm ches/kafka kafka-topics.sh --list --zookeeper $ZK_IP:2181
 ```
 
-Para criar o consumer, executar:
+Para criar o producer, executar:
 ```
 docker run --rm --interactive ches/kafka kafka-console-producer.sh --topic <topic_name> --broker-list $KAFKA_IP:9092
 
 ```
 
-Para criar o consumer executar (em aba/janela diferentes):
+Para criar o consumer executar (em aba/janela diferentes dos containers em execução):
 ```
 docker run --rm ches/kafka kafka-console-consumer.sh --topic <topic_name> --from-beginning --zookeeper $ZK_IP:2181
 ```

@@ -140,4 +140,19 @@ from kafka import TopicPartition
 from json import loads
 ```
 
-Assim como nos exemplos anteriores, é necessário criar o(s) tópico(s) que receberão os dados dos producers presentes no script, logo o cluster deve ser configurado antes de enviar/receber dados.
+Obs: Assim como nos exemplos anteriores, é necessário criar o(s) tópico(s) que receberão os dados dos producers presentes no script, logo o cluster deve ser configurado antes de enviar/receber dados.
+
+Após realizar a inserção dos includes no script, deve-se criar o producer (que é responsável por enviar os dados relevantes ao tópico):
+
+{% 
+def send_to_kafka_topic(detections, kafka_ip, topic_name):
+        json_str = json.dumps(str(detections), indent=4, sort_keys=True)
+        print(json_str)
+        producer = KafkaProducer(   bootstrap_servers=[os.environ['kafka_host_url']], 
+                                    api_version=(0,10,1), 
+                                    value_serializer=lambda v: json.dumps(v).encode('utf-8')
+                                )   
+        producer.send('image-detection-receive', json_str)
+        producer.flush()
+        print("Content sent to kafka topic!")
+%}

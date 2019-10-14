@@ -1,4 +1,4 @@
-## Instruções para Execução - Apache Kafka
+# Instruções para Execução - Apache Kafka
 
 Este hands-on tem a finalidade de explicar conceitos e demonstrar o funcionamento do Apache Kafka e Zookeeper, em sua forma nativa e via containers docker.
 
@@ -20,40 +20,55 @@ Sua arquitetura é pode ser definida por três módulos básicos, sendo eles:
 
 É possível definir um tópico específico para que um determinado consumer acesse e consuma os dados armazenados nele. Os tês módulos citados possuiem atributos específicos para configurações especiais, como o autocommit no consumer, que faz com que o consumer marque qual foi a última mensagem consumida. O autocommit permite que em execuções futuras, o consumer não consuma  os dados processados em execuçes anteriores.
 
-### Executando Kafka em sua forma nativa:
+## Executando Kafka em sua forma nativa:
+Obs.: Este tutorial foi executado com a versão kafka_2.11-2.2.0
 
 Inicialmente, acesse a página de [Download](https://kafka.apache.org/downloads) e baixe os binários da versão estável do Apache Kafka. Salve o pacote .tgz em um diretório de sua preferência, acesse-o e extraia o conteúdo.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+Após o download e extração do conteúdo, acesse a pasta bin e execute:
+```
+zookeeper-server-start.sh ../config/zookeeper.properties
+```
+Este comando é responsável por iniciar o servidor zookeeper, responsável por gerenciar os nós dentro do cluster, partições, tópicos e afins. Após executá-lo, uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_1.png) será mostrada.
 
-### Markdown
+Feito isso, ainda na pasta bin, em uma nova aba ou janela do terminal, é necessário iniciar os serviços Kafka:
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+```
+kafka-server-start.sh config/server.properties
+```
+Uma imagem semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_2.png) será exibida.
 
-```markdown
-Syntax highlighted code block
+O próximo passo é criar o tópico que receberá as mensagens enviadas pelo producer. Análogo ao passo anterior, em outra aba ou janela do terminal,  necessário executar:
+ ```
+ kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic <topic_name>
+ ```
+ 
+ É importante ressaltar que:
+ 1. localhost:9092 é referente ao ip da máquina onde o kafka está sendo executado, e 9092 é a porta utilizada pela aplicação;
+ 2. <topic_name> é o identificador do tópico e será utilizado por producers e consumers.
 
-# Header 1
-## Header 2
-### Header 3
+Após a execução do comando anterior, uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_3_topic.png) será exibida.
 
-- Bulleted
-- List
+Caso seja necessário criar vários tópicos, para listá-los use o comando:
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```
+kafka-topics.sh --list --bootstrap-server localhost:9092
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+Por fim, para testar a configuração, é necessário iniciar o producer e o consumer. Em outra aba ou janela, é necessário executar o seguinte código:
 
-### Jekyll Themes
+```
+kafka-console-producer.sh --broker-list localhost:9092 --topic <topic_name>
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/luizgdias/kafka/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+Uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_4_producer.png) será mostrada. Como percebido, o producer está a espera de mensagens para enviar ao cluster/tópico criado anteriormente. Já é possvel enviar mensagens, entretanto, não é possível visualizá-las pois o consumer ainda não foi iniciado, como visto na [imagem](https://github.com/luizgdias/kafka/blob/master/img_4_1_producer.png).
 
-### Support or Contact
+O último passo é relacionado a criação do consumer para a visualização das mensagens enviadas via consumer. Para iniciar uma instância de consumer, em uma nova aba ou janela do terminal, é necessário executar o seguinte código:
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+```
+kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <topic_name> --from-beginning
+```
+
+Essa linha de cdigo mostrará todas as mensagens (do início do tópico até o fim), que estejam armazenadas no tópico <topic_name>, criado em passos iniciais. Como percebido nessa [imagem](https://github.com/luizgdias/kafka/blob/master/img_5_consumer.png), a mensagem enviada ao tópico <topic_name>, foi acessada pelo producer e continua disponível no tópico por um período padrão de sete dias, após esse intervalo, as mensagens do tópico são excluídas.
+
+## Executando Kafka via containers docker

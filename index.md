@@ -4,7 +4,7 @@ Este hands-on tem a finalidade de explicar conceitos e demonstrar o funcionament
 
 ### O que é o Apache Kafka?
 O Apache Kafka é uma aplicação utilizada no desenvolvimento de pipelines de tempo real e streamming. Suas principais caractersticas são: escalabilidade, tolerância a falhas, e velocidade na troca de mensagens entre os módulos que o compõe.
-O Kafka é executado em forma de cluster, que pode ser executado em uma ou mais máquinas, armazenando os dados em categorias denominadas tópicos. As mensagens armazenadas constam em:
+O Kafka é executado em forma de cluster, que pode ser executado em uma ou mais máquinas, armazenando os dados em categorias denominadas tópicos. As mensagens armazenadas são compostas por:
 
 1. Uma chave (key); 
 2. Um valor (value);
@@ -18,7 +18,11 @@ Sua arquitetura é pode ser definida por três módulos básicos, sendo eles:
 2. Tópicos (topics): Responsáveis por categorizar as mensagens dentro do cluster;
 3. Consumidores (consumers): Responsáveis por receber as mensagens que estão clusterizadas.
 
-É possível definir um tópico específico para que um determinado consumer acesse e consuma os dados armazenados nele. Os tês módulos citados possuiem atributos específicos para configurações especiais, como o autocommit no consumer, que faz com que o consumer marque qual foi a última mensagem consumida, para que em execuções futuras, não consuma todos os dados processados anteriormente.
+É possível definir um tópico específico para que um determinado consumer acesse e consuma os dados armazenados nele. Os tês módulos citados possuiem atributos específicos para configurações especiais, como o autocommit no consumer, que faz com que o consumer marque qual foi a última mensagem consumida. O autocommit permite que em execuções futuras, o consumer não consuma  os dados processados em execuçes anteriores.
+
+### Executando Kafka em sua forma nativa:
+
+Inicialmente, acesse a página de [Download](https://kafka.apache.org/downloads) e baixe os binários da versão estável do Apache Kafka. Salve o pacote .tgz em um diretório de sua preferência, acesse-o e extraia o conteúdo.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 

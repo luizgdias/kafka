@@ -72,7 +72,7 @@ Essa linha de cdigo mostrará todas as mensagens (do início do tópico até o f
 
 ## Executando Kafka via containers docker
 
-O processo de execução do Kafka via container é mais simplificada (pelo isolamento proporcionado pela conteinerização), mas segue os mesmos passos da versão nativa.
+O processo de execução do Kafka via container é mais simplificada (pelo isolamento proporcionado pela conteinerização), mas segue os mesmos passos da versão nativa. O resultado dessa etapa são duas janelas/abas de terminal que se comunicam, uma janela/aba faz o papel de producer, e a outra de consumer. Para que isso seja possível são inicializados dois containers (zookeeper e kafka), e um tópico é criado, servindo de repositório.
 
 O primeiro passo é executar os container zookeeper e kafka:
 
@@ -81,17 +81,17 @@ docker run -d --name zookeeper jplock/zookeeper:3.4.6
 docker run -d --name kafka --link zookeeper:zookeeper ches/kafka
 
 ```
-Se os comandos ja foram executados antes, é provável que a tela seja semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_1_container.png) imagem. Caso contrário o sistema fará downloads dos containers.
+Se os comandos já foram executados antes, é provável que a tela seja semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_1_container.png) imagem. Caso contrário o sistema realizará o download dos containers e suas dependências.
 
 Após executá-los, é necessário exportar os ips dos containers:
-obs: note que os próximos comandos utilizam os conteúdos das variáveis $ZK_IP e $KAFKA_IP, então antes de executar o comando que faz uso de uma das variáveis, exporte seus respectivos valores.
+obs: note que os próximos comandos utilizam os conteúdos das variáveis $ZK_IP e $KAFKA_IP, então antes de executar o comando que faz uso de uma das variáveis, exporte seus respectivos valores executando os comandos a seguir:
 
 ```
 export ZK_IP=$(docker inspect --format "{{ .NetworkSettings.IPAddress }}" zookeeper)
 export KAFKA_IP=$(docker inspect --format "{{ .NetworkSettings.IPAddress }}" kafka)
 
 ```
-Opcional: Para visualizar o conteúdo dos ips:
+Opcional: Para visualizar o conteúdo das variáveis execute:
 ```
 echo $ZK_IP
 echo $KAFKA_IP
@@ -103,7 +103,6 @@ Para criar tópicos:
 docker run --rm ches/kafka kafka-topics.sh --create --topic <topic_name> --replication-factor 1 --partitions 1 --zookeeper $ZK_IP:2181
 
 ```
-
 
 Para listar os tópicos do cluster:
 ```

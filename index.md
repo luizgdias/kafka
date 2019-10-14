@@ -12,7 +12,7 @@ O Kafka é executado em forma de cluster, que pode ser executado em uma ou mais 
 
 O cluster pode ser composto por um ou mais tópicos, o que dependerá do contexto ao qual é aplicado.
 
-Sua arquitetura é pode ser definida por três módulos básicos, sendo eles:
+Sua arquitetura pode ser definida por três módulos básicos, sendo eles:
 
 1. Produtores (producers): Responsáveis por enviar mensagens ao cluster;
 2. Tópicos (topics): Responsáveis por categorizar as mensagens dentro do cluster;
@@ -32,10 +32,10 @@ zookeeper-server-start.sh ../config/zookeeper.properties
 Este comando é responsável por iniciar o servidor zookeeper, responsável por gerenciar os nós dentro do cluster, partições, tópicos e afins. Após executá-lo, uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_1.png) será mostrada.
 
 Feito isso, ainda na pasta bin, em uma nova aba ou janela do terminal, é necessário iniciar os serviços Kafka:
-
 ```
 kafka-server-start.sh config/server.properties
 ```
+
 Uma imagem semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_2.png) será exibida.
 
 O próximo passo é criar o tópico que receberá as mensagens enviadas pelo producer. Análogo ao passo anterior, em outra aba ou janela do terminal,  necessário executar:
@@ -50,13 +50,11 @@ O próximo passo é criar o tópico que receberá as mensagens enviadas pelo pro
 Após a execução do comando anterior, uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_3_topic.png) será exibida.
 
 Caso seja necessário criar vários tópicos, para listá-los use o comando:
-
 ```
 kafka-topics.sh --list --bootstrap-server localhost:9092
 ```
 
 Por fim, para testar a configuração, é necessário iniciar o producer e o consumer. Em outra aba ou janela, é necessário executar o seguinte código:
-
 ```
 kafka-console-producer.sh --broker-list localhost:9092 --topic <topic_name>
 ```
@@ -64,7 +62,6 @@ kafka-console-producer.sh --broker-list localhost:9092 --topic <topic_name>
 Uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_4_producer.png) será mostrada. Como percebido, o producer está a espera de mensagens para enviar ao cluster/tópico criado anteriormente. Já é possvel enviar mensagens, entretanto, não é possível visualizá-las pois o consumer ainda não foi iniciado, como visto na [imagem](https://github.com/luizgdias/kafka/blob/master/img_4_1_producer.png).
 
 O último passo é relacionado a criação do consumer para a visualização das mensagens enviadas via consumer. Para iniciar uma instância de consumer, em uma nova aba ou janela do terminal, é necessário executar o seguinte código:
-
 ```
 kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <topic_name> --from-beginning
 ```

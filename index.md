@@ -18,7 +18,7 @@ Sua arquitetura pode ser definida por três módulos básicos, sendo eles:
 2. Tópicos (topics): Responsáveis por categorizar as mensagens dentro do cluster;
 3. Consumidores (consumers): Responsáveis por receber as mensagens que estão clusterizadas.
 
-É possível definir um tópico específico para que um determinado consumer acesse e consuma os dados armazenados nele. Os tês módulos citados possuiem atributos específicos para configurações especiais, como o autocommit no consumer, que faz com que o consumer marque qual foi a última mensagem consumida. O autocommit permite que em execuções futuras, o consumer não consuma  os dados processados em execuçes anteriores.
+É possível definir que apenas um consumer (ou um conjunto de consumers) acesse um topico (ou conjunto de tópicos) para consumir dados. Isso faz com que apenas partes interessadas acessem dados específicos, sem que todos os consumers tenham que acessar apenas um tópico e procurar por determinados dados. Os tês módulos citados possuem atributos específicos para configurações especiais, como o autocommit no consumer, que faz com que o consumer marque qual foi a última mensagem consumida. O autocommit permite que em execuções futuras, o consumer não consuma  os dados processados em execuçes anteriores.
 
 ## Executando Kafka em sua forma nativa:
 Obs.: Este tutorial foi executado com a versão kafka_2.11-2.2.0

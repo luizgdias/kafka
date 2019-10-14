@@ -1,6 +1,24 @@
 ## Instruções para Execução - Apache Kafka
 
-You can use the [editor on GitHub](https://github.com/luizgdias/kafka/edit/master/index.md) to maintain and preview the content for your website in Markdown files.
+Este hands-on tem a finalidade de explicar conceitos e demonstrar o funcionamento do Apache Kafka e Zookeeper, em sua forma nativa e via containers docker.
+
+###O que é o Apache Kafka?
+O Apache Kafka é uma aplicação utilizada no desenvolvimento de pipelines de tempo real e streamming. Suas principais caractersticas são: escalabilidade, tolerância a falhas, e velocidade na troca de mensagens entre os módulos que o compõe.
+O Kafka é executado em forma de cluster, que pode ser executado em uma ou mais máquinas, armazenando os dados em categorias denominadas tópicos. As mensagens armazenadas constam em:
+
+1. Uma chave (key); 
+2. Um valor (value);
+3. Um timestamp; 
+
+O cluster pode ser composto por um ou mais tópicos, o que dependerá do contexto ao qual é aplicado.
+
+Sua arquitetura é pode ser definida por três módulos básicos, sendo eles:
+
+1. Produtores (producers): Responsáveis por enviar mensagens ao cluster;
+2. Tópicos (topics): Responsáveis por categorizar as mensagens dentro do cluster;
+3. Consumidores (consumers): Responsáveis por receber as mensagens que estão clusterizadas.
+
+É possível definir um tópico específico para que um determinado consumer acesse e consuma os dados armazenados nele. Os tês módulos citados possuiem atributos específicos para configurações especiais, como o autocommit no consumer, que faz com que o consumer marque qual foi a última mensagem consumida, para que em execuções futuras, não consuma todos os dados processados anteriormente.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 

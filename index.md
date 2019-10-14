@@ -160,10 +160,10 @@ A linha producer.send() envia o conteúdo de 'detections' para o tópico 'topic_
 Até agora foi visto como enviar dados ao tópico via API, agora será mostrado como consumir dados de um tópico. O código abaixo exemplifica um modelo de consumer, que pode variar de acordo com os parâmetros configurados.
 
 ```python
-def consumer_kafka_topic_messages(topic_name, kafka_ip):
+def consumer_kafka_topic_messages(topic_name):
     consumer = KafkaConsumer(
                                 topic_name,
-                                bootstrap_servers=[kafka_ip],
+                                bootstrap_servers=[os.environ['kafka_host_url']],
                                 auto_offset_reset='earliest',
                                 enable_auto_commit=True,
                                 auto_commit_interval_ms=1000,
@@ -183,7 +183,7 @@ A estrutura do consumer é similar a estrutura do producer, diferindo nos parâm
 - group_id está relacionado ao auto_commit e ao não consumo de dados processados. Dessa forma os apenas os consumidores que tiverem o mesmo group_id terão acesso ao conteúdo daquele tópico, e só consumirão os dados uma vez. Essa caracterstica é muito importante porque sem esses parâmetros, sempre que o consumer for invocado, todos os dados do tópico são reprocessados, tanto os novos dados quanto os antigos.
 
 ## Configurando .yml do container para enviar dados ao Kafka externo
-Como visto no trecho de código do producer, é utilizada uma variável não definida na função, a variável kafka_host_url:
+Como visto no trecho de código do producer e do consumer, é utilizada uma variável não definida nas funções, a variável kafka_host_url:
 ```python
 bootstrap_servers=[os.environ['kafka_host_url']]
 ```

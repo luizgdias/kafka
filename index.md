@@ -81,6 +81,8 @@ docker run -d --name zookeeper jplock/zookeeper:3.4.6
 docker run -d --name kafka --link zookeeper:zookeeper ches/kafka
 
 ```
+Se os comandos ja foram executados antes, é provável que a tela seja semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_1_container.png) imagem. Caso contrário o sistema fará downloads dos containers.
+
 Após executá-los, é necessário exportar os ips dos containers:
 obs: note que os próximos comandos utilizam os conteúdos das variáveis $ZK_IP e $KAFKA_IP, então antes de executar o comando que faz uso de uma das variáveis, exporte seus respectivos valores.
 
@@ -94,6 +96,7 @@ Opcional: Para visualizar o conteúdo dos ips:
 echo $ZK_IP
 echo $KAFKA_IP
 ```
+[Essa](https://github.com/luizgdias/kafka/blob/master/img_2_container.png) imagem exemplifica a exportação e print dos ips dos containers.
 
 Para criar tópicos:
 ```

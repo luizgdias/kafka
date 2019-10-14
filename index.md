@@ -131,3 +131,13 @@ O primeiro passo é instalar a API via pip ou pip3 install :
 ```
 pip install kafka-python
 ```
+
+Após a instalação, devem ser feitos alguns includes no arquivo .py que receberá o(s) producer(s) e/ou consumer(s):
+```
+from kafka import KafkaConsumer
+from kafka import KafkaProducer
+from kafka import TopicPartition
+from json import loads
+```
+
+Assim como nos exemplos anteriores, é necessário criar o(s) tópico(s) que receberão os dados dos producers presentes no script, logo o cluster deve ser configurado antes de enviar/receber dados.

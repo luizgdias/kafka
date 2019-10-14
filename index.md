@@ -199,4 +199,4 @@ volumes:
       kafka_host_url: xx.xxx.xxxx.xx:9092
 ```
 
-O valor recebido pela variável kafka_host_url é referente ao ip e porta da máquina que receberá os dados enviados pelo consumer definido dentro do container.
+O valor recebido pela variável kafka_host_url é referente ao ip e porta da máquina que receberá os dados enviados pelos producers definido dentro do container, bem como servirá os dados do tópico para os consumers.

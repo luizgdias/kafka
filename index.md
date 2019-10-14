@@ -144,15 +144,13 @@ Obs: Assim como nos exemplos anteriores, é necessário criar o(s) tópico(s) qu
 
 Após realizar a inserção dos includes no script, deve-se criar o producer (que é responsável por enviar os dados relevantes ao tópico):
 
-{% 
-def send_to_kafka_topic(detections, kafka_ip, topic_name):
-        json_str = json.dumps(str(detections), indent=4, sort_keys=True)
-        print(json_str)
+```python
+def send_to_kafka_topic(detections, topic_name):
         producer = KafkaProducer(   bootstrap_servers=[os.environ['kafka_host_url']], 
                                     api_version=(0,10,1), 
                                     value_serializer=lambda v: json.dumps(v).encode('utf-8')
                                 )   
-        producer.send('image-detection-receive', json_str)
+        producer.send(topic_name, detections)
         producer.flush()
         print("Content sent to kafka topic!")
-%}
+```

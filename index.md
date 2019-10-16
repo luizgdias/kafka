@@ -35,14 +35,14 @@ Este comando é responsável por iniciar o servidor zookeeper, responsável por 
 
 Feito isso, ainda na pasta bin, em uma nova aba ou janela do terminal, é necessário iniciar os serviços Kafka:
 ```
-kafka-server-start.sh ..config/server.properties
+kafka-server-start.sh ../config/server.properties
 ```
 
 Uma imagem semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_2.png) será exibida.
 
 O próximo passo é criar o tópico que receberá as mensagens enviadas pelo producer. Análogo ao passo anterior, em outra aba ou janela do terminal,  necessário executar:
  ```
- kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic <topic_name>
+ ./kafka-topics.sh --create --bootstrap-server localhost:9092 --replication-factor 1 --partitions 1 --topic <topic_name>
  ```
  
  É importante ressaltar que:
@@ -53,21 +53,21 @@ Após a execução do comando anterior, uma tela semelhante a [essa](https://git
 
 Caso seja necessário criar vários tópicos, para listá-los use o comando:
 ```
-kafka-topics.sh --list --bootstrap-server localhost:9092
+./kafka-topics.sh --list --bootstrap-server localhost:9092
 ```
 
 obs.: As janelas/abas relacionadas a criação e listagem dos tópicos são estáticas, dessa forma, não é necessário deixá-las abertas. Assim, após criar um tópico, você pode reusar a mesma janela/aba nos passos seguintes.
 
 Por fim, para testar a configuração, é necessário iniciar o producer e o consumer. Em outra aba ou janela, é necessário executar o seguinte código:
 ```
-kafka-console-producer.sh --broker-list localhost:9092 --topic <topic_name>
+./kafka-console-producer.sh --broker-list localhost:9092 --topic <topic_name>
 ```
 
 Uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_4_producer.png) será mostrada. Como percebido, o producer está a espera de mensagens para enviar ao cluster/tópico criado anteriormente. Já é possvel enviar mensagens, entretanto, não é possível visualizá-las pois o consumer ainda não foi iniciado, como visto na [imagem](https://github.com/luizgdias/kafka/blob/master/img_4_1_producer.png).
 
 O último passo é relacionado a criação do consumer para a visualização das mensagens enviadas via consumer. Para iniciar uma instância de consumer, em uma nova aba ou janela do terminal, é necessário executar o seguinte código:
 ```
-kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <topic_name> --from-beginning
+./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <topic_name> --from-beginning
 ```
 
 Essa linha de cdigo mostrará todas as mensagens (do início do tópico até o fim), que estejam armazenadas no tópico <topic_name>, criado em passos iniciais. Como percebido nessa [imagem](https://github.com/luizgdias/kafka/blob/master/img_5_consumer.png), a mensagem enviada ao tópico <topic_name>, foi acessada pelo consumer e continua disponível no tópico por um período padrão de sete dias (esse intervalo pode ser alterado), após esse intervalo, as mensagens do tópico são excluídas.

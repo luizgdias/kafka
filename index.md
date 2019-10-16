@@ -35,7 +35,7 @@ Este comando é responsável por iniciar o servidor zookeeper, responsável por 
 
 Feito isso, ainda na pasta bin, em uma nova aba ou janela do terminal, é necessário iniciar os serviços Kafka:
 ```
-kafka-server-start.sh ../config/server.properties
+./kafka-server-start.sh ../config/server.properties
 ```
 
 Uma imagem semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_2.png) será exibida.

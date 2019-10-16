@@ -201,3 +201,17 @@ volumes:
 ```
 
 O valor recebido pela variável kafka_host_url é referente ao ip e porta da máquina que receberá os dados enviados pelos producers definido dentro do container, bem como servirá os dados do tópico para os consumers.
+
+Para comunicação entre máquinas diferentes, e o kafka, é necessário definir as portas da maquina que rodam o kafka como portas públicas:
+
+```
+sudo ufw allow 9092
+sudo ufw allow 2181
+```
+
+E também configurar no arquivo config/server.properties na linha 36 o endereço de adversed.listeners:
+```
+advertised.listeners=PLAINTEXT://<ip da maquina que roda o kafka>:9092
+```
+
+Após essas configurações, reiniciar o cluster.

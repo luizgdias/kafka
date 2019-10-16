@@ -1,6 +1,6 @@
 # Instruções para Execução - Apache Kafka
 
-Este hands-on tem a finalidade de conceituar e demonstrar o funcionamento do Apache Kafka e Zookeeper, em sua forma nativa e via containers docker.
+Este hands-on tem a finalidade de conceituar e demonstrar o funcionamento do Apache Kafka e Zookeeper, em sua forma nativa, via containers docker, e como configurar o cluster para funcionar em ambiente distribudo com o kafka sendo executado em um servidor isolado, sendo acessado por diferentes nós.
 
 ### O que é o Apache Kafka?
 O Apache Kafka é uma aplicação utilizada no desenvolvimento de pipelines de tempo real e streamming. Suas principais caractersticas são: escalabilidade, tolerância a falhas, e velocidade na troca de mensagens entre os módulos que o compõe.
@@ -29,7 +29,7 @@ Após o download e extração do conteúdo, acesse a pasta bin e execute:
 ```
 ./zookeeper-server-start.sh ../config/zookeeper.properties
 ```
-Obs.: caso dê erro do tipo "endereço já em uso", execute o comando ./zookeeper-server-stop.sh e reexecute o start server.
+(Obs.: caso dê erro do tipo "endereço já em uso", execute o comando ./zookeeper-server-stop.sh e reexecute o comando de start server.)
 
 Este comando é responsável por iniciar o servidor zookeeper, responsável por gerenciar os nós dentro do cluster, partições, tópicos e afins. Após executá-lo, uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_1.png) será mostrada.
 
@@ -70,34 +70,35 @@ O último passo é relacionado a criação do consumer para a visualização das
 ./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <topic_name> --from-beginning
 ```
 
-Essa linha de cdigo mostrará todas as mensagens (do início do tópico até o fim), que estejam armazenadas no tópico <topic_name>, criado em passos iniciais. Como percebido nessa [imagem](https://github.com/luizgdias/kafka/blob/master/img_5_consumer.png), a mensagem enviada ao tópico <topic_name>, foi acessada pelo consumer e continua disponível no tópico por um período padrão de sete dias (esse intervalo pode ser alterado), após esse intervalo, as mensagens do tópico são excluídas.
+Essa linha de código mostrará todas as mensagens (do início do tópico até o fim), que estejam armazenadas no tópico <topic_name>, criado em passos iniciais. Como percebido nessa [imagem](https://github.com/luizgdias/kafka/blob/master/img_5_consumer.png), a mensagem enviada ao tópico <topic_name>, foi acessada pelo consumer e continua disponível no tópico por um período padrão de sete dias (esse intervalo pode ser alterado), após esse intervalo, as mensagens do tópico são excluídas.
 
 ## Executando Kafka via containers docker
 
 O processo de execução do Kafka via container é mais simplificada (pelo isolamento proporcionado pela conteinerização), mas segue os mesmos passos da versão nativa. O resultado dessa etapa são duas janelas/abas de terminal que se comunicam, uma janela/aba faz o papel de producer, e a outra de consumer. Para que isso seja possível são inicializados dois containers (zookeeper e kafka), e um tópico é criado, servindo de repositório.
 
 O primeiro passo é executar os container zookeeper e kafka:
-
 ```
 docker run -d --name zookeeper jplock/zookeeper:3.4.6
 docker run -d --name kafka --link zookeeper:zookeeper ches/kafka
 
 ```
+
 Se os comandos já foram executados antes, é provável que a tela seja semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_1_container.png) imagem. Caso contrário o sistema realizará o download dos containers e suas dependências.
 
 Após executá-los, é necessário exportar os ips dos containers:
 obs: note que os próximos comandos utilizam os conteúdos das variáveis $ZK_IP e $KAFKA_IP, então antes de executar o comando que faz uso de uma das variáveis, exporte seus respectivos valores executando os comandos a seguir:
-
 ```
 export ZK_IP=$(docker inspect --format "{{ .NetworkSettings.IPAddress }}" zookeeper)
 export KAFKA_IP=$(docker inspect --format "{{ .NetworkSettings.IPAddress }}" kafka)
 
 ```
+
 Opcional: Para visualizar o conteúdo das variáveis execute:
 ```
 echo $ZK_IP
 echo $KAFKA_IP
 ```
+
 [Essa](https://github.com/luizgdias/kafka/blob/master/img_2_container.png) imagem exemplifica a exportação e print dos ips dos containers.
 
 Para criar tópicos:
@@ -116,17 +117,18 @@ Para criar o producer, executar:
 docker run --rm --interactive ches/kafka kafka-console-producer.sh --topic <topic_name> --broker-list $KAFKA_IP:9092
 
 ```
+
 O funcionamento do producer via container é o mesmo do producer nativo. O producer fica pronto para enviar a mensagem ao cluster/tópico, como visto [nessa](https://github.com/luizgdias/kafka/blob/master/img_3_container_producer.png) imagem.
 
 Para criar o consumer executar (em aba/janela diferentes dos containers em execução):
 ```
 docker run --rm ches/kafka kafka-console-consumer.sh --topic <topic_name> --from-beginning --zookeeper $ZK_IP:2181
 ```
-Da mesma forma que o consumer nativo, o consumer container funciona de maneira análoga, ouvindo o tópico e processando as mensagens de acordo com sua chegada, como mostrado [nessa](https://github.com/luizgdias/kafka/blob/master/img_4_container_cons.png) imagem.
+Da mesma forma que o consumer nativo, o consumer container permanece ouvindo o tópico e processando as mensagens de acordo com sua chegada, como mostrado [nessa](https://github.com/luizgdias/kafka/blob/master/img_4_container_cons.png) imagem.
 
 ## Kafka-python API
-Até agora vimos como realizar a troca de mensagens de forma simples, digitando mensagens no console do producer e enviado-as ao tópico. Percebemos que o tópico possui funço de repositório, enquanto o producer é o agente ativo que envia as mensagens. Já o consumer é um agente passivo-reativo, que escuta as mensagens que chegam no tópico e as processa. 
-Nessa seção será apresentada a API do kafka para a linguagem python. A API proporciona criar producer, tópicos e consumers de forma dinâmica com melhor nível de configuração, por meio da linguagem de programaço python.
+Até agora vimos como realizar a troca de mensagens de forma simples, digitando mensagens no console do producer e enviado-as ao tópico. Percebemos que o tópico possui função de repositório, enquanto o producer é o agente ativo que envia as mensagens. Já o consumer é um agente passivo-reativo, que escuta as mensagens que chegam no tópico e as processa. 
+Nessa seção será apresentada a API do kafka para a linguagem python. A API proporciona criar producers, tópicos e consumers de forma dinâmica com melhor nível de configuração, por meio da linguagem de programaço python.
 
 O primeiro passo é instalar a API via pip ou pip3 install :
 ```bash
@@ -141,10 +143,9 @@ from kafka import TopicPartition
 from json import loads
 ```
 
-Obs: Assim como nos exemplos anteriores, é necessário criar o(s) tópico(s) que receberão os dados dos producers presentes no script, logo o cluster deve ser configurado antes de enviar/receber dados.
+(Obs: Assim como nos exemplos anteriores, é necessário primeiro, criar o(s) tópico(s) que receberão os dados dos producers presentes no script, logo o cluster deve ser configurado antes de enviar/receber dados.)
 
 Após realizar a inserção dos includes no script, deve-se criar o producer (que é responsável por enviar os dados relevantes ao tópico):
-
 ```python
 def send_to_kafka_topic(detections, topic_name):
         producer = KafkaProducer(   bootstrap_servers=[os.environ['kafka_host_url']], 
@@ -154,6 +155,7 @@ def send_to_kafka_topic(detections, topic_name):
         producer.send(topic_name, detections)
         producer.flush()
 ```
+
 O bloco de código anterior é um exemplo básico de uma função que recebe dois atributos e envia um deles via producer a um tópico. O primeiro parâmetro do construtor do producer é referente ao endereço do servidor, que deve ser correspondente ao ip:porta onde está sendo executado. O segundo parâmetro é a versão da api que está sendo utilizada, e por fim o terceiro serealiza o conteúdo a ser enviado em conteúdo json.
 
 A linha producer.send() envia o conteúdo de 'detections' para o tópico 'topic_name', enquanto producer.flush() bloqueia qualquer requisição ao conteudo que está sendo enviado, até que ele seja de fato enviado ao tópico. A invocação desse método torna todos os registros armazenados em buffer imediatamente disponíveis para envio.
@@ -203,16 +205,16 @@ volumes:
 O valor recebido pela variável kafka_host_url é referente ao ip e porta da máquina que receberá os dados enviados pelos producers definido dentro do container, bem como servirá os dados do tópico para os consumers.
 
 ## Instruções para comunicação de máquinas diferentes ao kafka isolado em um servidor
-Para comunicação diferentes máquinas, e o kafka isolado em um servidor, é necessário definir as portas da maquina que rodam o kafka como portas públicas:
-
+Para comunicação de diferentes máquinas, e o kafka isolado em um servidor, é necessário definir as portas da máquina que roda o kafka como portas públicas. Para isso execute:
 ```
 sudo ufw allow 9092
 sudo ufw allow 2181
 ```
 
-E também configurar no arquivo config/server.properties na linha 36 o endereço de adversed.listeners, para que os outros ns encontrem o cluster, produzam e consumam mensagens:
+Feito isso é necessário configurar no arquivo config/server.properties na linha 36, o endereço de adversed.listeners, para que os outros nós encontrem o cluster, produzam e consumam mensagens:
 ```
 advertised.listeners=PLAINTEXT://<ip da maquina que roda o kafka>:9092
 ```
 
 Após essas configurações, reiniciar o cluster.
+Para mais informações sobre parâmetros de producer e consumer, consultar a documentação do Apache Kafka [neste](https://kafka.apache.org/) link.

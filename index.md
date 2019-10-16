@@ -27,8 +27,10 @@ Inicialmente, acesse a página de [Download](https://kafka.apache.org/downloads)
 
 Após o download e extração do conteúdo, acesse a pasta bin e execute:
 ```
-zookeeper-server-start.sh ../config/zookeeper.properties
+./zookeeper-server-start.sh ../config/zookeeper.properties
 ```
+Obs.: caso dê erro do tipo "endereço já em uso", execute o comando ./zookeeper-server-stop.sh e reexecute o start server.
+
 Este comando é responsável por iniciar o servidor zookeeper, responsável por gerenciar os nós dentro do cluster, partições, tópicos e afins. Após executá-lo, uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_1.png) será mostrada.
 
 Feito isso, ainda na pasta bin, em uma nova aba ou janela do terminal, é necessário iniciar os serviços Kafka:

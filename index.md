@@ -31,14 +31,14 @@ Após o download e extração do conteúdo, acesse a pasta bin e execute:
 ```
 (Obs.: caso dê erro do tipo "endereço já em uso", execute o comando ./zookeeper-server-stop.sh e reexecute o comando de start server.)
 
-Este comando é responsável por iniciar o servidor zookeeper, responsável por gerenciar os nós dentro do cluster, partições, tópicos e afins. Após executá-lo, uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_1.png) será mostrada.
+Este comando é responsável por iniciar o servidor zookeeper, responsável por gerenciar os nós dentro do cluster, partições, tópicos e afins. Após executá-lo, uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/prints/img_1.png) será mostrada.
 
 Feito isso, ainda na pasta bin, em uma nova aba ou janela do terminal, é necessário iniciar os serviços Kafka:
 ```
 ./kafka-server-start.sh ../config/server.properties
 ```
 
-Uma imagem semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_2.png) será exibida.
+Uma imagem semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/prints/img_2.png) será exibida.
 
 O próximo passo é criar o tópico que receberá as mensagens enviadas pelo producer. Análogo ao passo anterior, em outra aba ou janela do terminal,  necessário executar:
  ```
@@ -49,7 +49,7 @@ O próximo passo é criar o tópico que receberá as mensagens enviadas pelo pro
  1. localhost:9092 é referente ao ip da máquina onde o kafka está sendo executado, e 9092 é a porta utilizada pela aplicação;
  2. <topic_name> é o identificador do tópico e será utilizado por producers e consumers.
 
-Após a execução do comando anterior, uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_3_topic.png) será exibida.
+Após a execução do comando anterior, uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/prints/img_3_topic.png) será exibida.
 
 Caso seja necessário criar vários tópicos, para listá-los use o comando:
 ```
@@ -63,14 +63,14 @@ Por fim, para testar a configuração, é necessário iniciar o producer e o con
 ./kafka-console-producer.sh --broker-list localhost:9092 --topic <topic_name>
 ```
 
-Uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_4_producer.png) será mostrada. Como percebido, o producer está a espera de mensagens para enviar ao cluster/tópico criado anteriormente. Já é possvel enviar mensagens, entretanto, não é possível visualizá-las pois o consumer ainda não foi iniciado, como visto na [imagem](https://github.com/luizgdias/kafka/blob/master/img_4_1_producer.png).
+Uma tela semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/prints/img_4_producer.png) será mostrada. Como percebido, o producer está a espera de mensagens para enviar ao cluster/tópico criado anteriormente. Já é possvel enviar mensagens, entretanto, não é possível visualizá-las pois o consumer ainda não foi iniciado, como visto na [imagem](https://github.com/luizgdias/kafka/blob/master/img_4_1_producer.png).
 
 O último passo é relacionado a criação do consumer para a visualização das mensagens enviadas via consumer. Para iniciar uma instância de consumer, em uma nova aba ou janela do terminal, é necessário executar o seguinte código:
 ```
 ./kafka-console-consumer.sh --bootstrap-server localhost:9092 --topic <topic_name> --from-beginning
 ```
 
-Essa linha de código mostrará todas as mensagens (do início do tópico até o fim), que estejam armazenadas no tópico <topic_name>, criado em passos iniciais. Como percebido nessa [imagem](https://github.com/luizgdias/kafka/blob/master/img_5_consumer.png), a mensagem enviada ao tópico <topic_name>, foi acessada pelo consumer e continua disponível no tópico por um período padrão de sete dias (esse intervalo pode ser alterado), após esse intervalo, as mensagens do tópico são excluídas.
+Essa linha de código mostrará todas as mensagens (do início do tópico até o fim), que estejam armazenadas no tópico <topic_name>, criado em passos iniciais. Como percebido nessa [imagem](https://github.com/luizgdias/kafka/blob/master/prints/img_5_consumer.png), a mensagem enviada ao tópico <topic_name>, foi acessada pelo consumer e continua disponível no tópico por um período padrão de sete dias (esse intervalo pode ser alterado), após esse intervalo, as mensagens do tópico são excluídas.
 
 ## Executando Kafka via containers docker
 
@@ -83,7 +83,7 @@ docker run -d --name kafka --link zookeeper:zookeeper ches/kafka
 
 ```
 
-Se os comandos já foram executados antes, é provável que a tela seja semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/img_1_container.png) imagem. Caso contrário o sistema realizará o download dos containers e suas dependências.
+Se os comandos já foram executados antes, é provável que a tela seja semelhante a [essa](https://github.com/luizgdias/kafka/blob/master/prints/img_1_container.png) imagem. Caso contrário o sistema realizará o download dos containers e suas dependências.
 
 Após executá-los, é necessário exportar os ips dos containers:
 obs: note que os próximos comandos utilizam os conteúdos das variáveis $ZK_IP e $KAFKA_IP, então antes de executar o comando que faz uso de uma das variáveis, exporte seus respectivos valores executando os comandos a seguir:
@@ -99,7 +99,7 @@ echo $ZK_IP
 echo $KAFKA_IP
 ```
 
-[Essa](https://github.com/luizgdias/kafka/blob/master/img_2_container.png) imagem exemplifica a exportação e print dos ips dos containers.
+[Essa](https://github.com/luizgdias/kafka/blob/master/prints/img_2_container.png) imagem exemplifica a exportação e print dos ips dos containers.
 
 Para criar tópicos:
 ```
@@ -118,13 +118,13 @@ docker run --rm --interactive ches/kafka kafka-console-producer.sh --topic <topi
 
 ```
 
-O funcionamento do producer via container é o mesmo do producer nativo. O producer fica pronto para enviar a mensagem ao cluster/tópico, como visto [nessa](https://github.com/luizgdias/kafka/blob/master/img_3_container_producer.png) imagem.
+O funcionamento do producer via container é o mesmo do producer nativo. O producer fica pronto para enviar a mensagem ao cluster/tópico, como visto [nessa](https://github.com/luizgdias/kafka/blob/master/prints/img_3_container_producer.png) imagem.
 
 Para criar o consumer executar (em aba/janela diferentes dos containers em execução):
 ```
 docker run --rm ches/kafka kafka-console-consumer.sh --topic <topic_name> --from-beginning --zookeeper $ZK_IP:2181
 ```
-Da mesma forma que o consumer nativo, o consumer container permanece ouvindo o tópico e processando as mensagens de acordo com sua chegada, como mostrado [nessa](https://github.com/luizgdias/kafka/blob/master/img_4_container_cons.png) imagem.
+Da mesma forma que o consumer nativo, o consumer container permanece ouvindo o tópico e processando as mensagens de acordo com sua chegada, como mostrado [nessa](https://github.com/luizgdias/kafka/blob/master/prints/img_4_container_cons.png) imagem.
 
 ## Kafka-python API
 Até agora vimos como realizar a troca de mensagens de forma simples, digitando mensagens no console do producer e enviado-as ao tópico. Percebemos que o tópico possui função de repositório, enquanto o producer é o agente ativo que envia as mensagens. Já o consumer é um agente passivo-reativo, que escuta as mensagens que chegam no tópico e as processa. 

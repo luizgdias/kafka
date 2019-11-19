@@ -245,3 +245,23 @@ WORKDIR /librdkafka
 ```
 RUN pip3 install --no-binary :all: confluent-kafka
 ```
+OBS.: a biblioteca libdrkafka deve ser adicionada ao container, neste exemplo ela foi adicionada no diretrio Docker.
+
+Após configurar o Dockerfile, é necessário adicionar os arquivos de autenticação kerberos. Neste exemplo foram criados os diretórios Docker > confs > app-secrets, e adicionados dois arquivos:
+1. kafka-client.keytab
+2. krb5.conf
+
+O arquivo keytab é usado para autenticar um principal em um host para o Kerberos sem qualquer interação do usuário ou ter que armazenar uma senha em um arquivo de texto criptografado. O arquivo krb5.conf por sua vez possui informações sobre o host servidor, sua estrutura básica é:
+```
+[libdefaults]
+  renew_lifetime = 7d
+  forwardable = true
+  default_realm = REALM_NAME
+
+ 
+[realms]
+	REALM_NAME = {
+		kdc = realm_name.domain.br
+		admin_server = realm_name.domain.br
+	}
+ ```

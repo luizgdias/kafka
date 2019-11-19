@@ -218,3 +218,14 @@ advertised.listeners=PLAINTEXT://<ip da maquina que roda o kafka>:9092
 
 Após essas configurações, reiniciar o cluster.
 Para mais informações sobre parâmetros de producer e consumer, consultar a documentação do Apache Kafka [neste](https://kafka.apache.org/) link.
+
+## Instruções para configurar o Kafka em ambiente Kerberizado
+O processo de configuração do Apache Kafka em ambiente que faz uso do protocolo de autenticação Kerberos (voltado a sistemas distribudos), é similar a configuração do Kafka em máquinas distintas, entretanto com arquivos adicionais. Neste exemplo ser demonstrado o passo a passo para a configuração de um container docker que envia dados a um servidor remoto kerberizado. Para que a comunicação nesse cenário seja possível, ambas as partes devem estar configuradas com o protocolo em questão. 
+
+No processo de configuração é utilizada a biblioteca kafka-confluent disponível [neste](https://github.com/confluentinc/confluent-kafka-python) link que possui exemplos de producer e consumer, e pode ser instalada via pip:
+
+```
+pip install confluent-kafka
+```
+
+Após instalar a biblioteca confluent, é necessário realizar o download de uma segunda biblioteca responsável por realizar a comunicação entre o kafka e o kerberos, a biblioteca librdkafka disponível [neste](https://github.com/edenhill/librdkafka) link. Para este exemplo foi utilizada a versão 1.2.1.

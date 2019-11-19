@@ -228,4 +228,20 @@ No processo de configuração é utilizada a biblioteca kafka-confluent disponí
 pip install confluent-kafka
 ```
 
-Após instalar a biblioteca confluent, é necessário realizar o download de uma segunda biblioteca responsável por realizar a comunicação entre o kafka e o kerberos, a biblioteca librdkafka disponível [neste](https://github.com/edenhill/librdkafka) link. Para este exemplo foi utilizada a versão 1.2.1.
+Após instalar a biblioteca confluent, é necessário realizar o download de uma segunda biblioteca responsável por realizar a comunicação entre o kafka e o kerberos, a biblioteca librdkafka disponível [neste](https://github.com/edenhill/librdkafka) link. Para este exemplo foi utilizada a versão 1.2.1., além da biblioteca kerberos
+
+As configurações a serem adicionadas no dockerfile são:
+1. Instalar a biblioteca kerberos:
+```
+RUN apt install python3-pip krb5-user -y
+```
+2. Adicionar a biblioteca librdkafka:
+```
+ADD librdkafka /librdkafka
+WORKDIR /librdkafka
+```
+
+3. Instalar a biblioteca confluent-kafka:
+```
+RUN pip3 install --no-binary :all: confluent-kafka
+```

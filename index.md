@@ -266,6 +266,7 @@ O arquivo keytab é usado para autenticar um principal em um host para o Kerbero
 	}
  ```
 Após configurar os arquivos de autenticação kerberos, é necessário configurar os arquivos de autenticação kafka. Foi criado no mesmo diretório Docker, um diretório denominado kerberos_files, que contém cinco arquivos:
+
 1. kafka_client_kaas.conf
 2. kafka_jass.conf
 3. kafka-client.keytab
